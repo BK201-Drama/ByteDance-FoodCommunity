@@ -1,8 +1,11 @@
+import PageContainer from "./pages/PageContainer";
+import { HashRouter } from 'react-router-dom';
+
 function App() {
   return (
-    <div className="App">
-      App
-    </div>
+    <HashRouter>
+      <PageContainer />
+    </HashRouter>
   );
 }
 
