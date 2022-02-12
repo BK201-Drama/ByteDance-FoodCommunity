@@ -6,7 +6,7 @@ import React, {
 export default function Login () {
 
   useEffect(async () => {
-
+    
   }, [])
 
   return (

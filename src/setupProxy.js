@@ -5,7 +5,7 @@ module.exports = function(app){
     '/api',
     createProxyMiddleware({
       target: 'https://bk201-drama.app.cloudendpoint.cn/api',
-      changeOrigin: true, 
+      changeOrigin: true,
     })
   )
 }
