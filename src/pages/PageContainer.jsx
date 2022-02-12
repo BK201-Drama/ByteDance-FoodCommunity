@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRoutes } from 'react-router-dom';
+import { useRoutes, Route, Routes } from 'react-router-dom';
 import './PageContainer.css';
 
 import { Layout } from 'antd';
@@ -17,20 +17,20 @@ const { Content } = Layout;
  */
 export default function PageContainer () {
 
-  const routes = useRoutes([
-    { path: "/login", element: <Login />},
-    { path: "/sign", element: <Sign />},
-    { path: "*", element: <NoPermission />}
-  ]);
+  // const routes = useRoutes([
+  //   { path: "/login", element: <Login />},
+  //   { path: "/sign", element: <Sign />},
+  //   { path: "*", element: <NoPermission />}
+  // ]);
 
   return (
     <Layout>
       <TopBar/>
       <Content style={{ padding: '0 50px' }}>
         <div style={{ paddingTop: '20px' }}>
-          {
-            routes
-          }
+          <Routes>
+            <Route path="/login" element={<Login />} exact/>
+          </Routes>
         </div>
       </Content>
     </Layout>

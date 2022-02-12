@@ -1,10 +1,10 @@
 import http from './http';
 
-export async function login () {
-  const res = await http.post('/login', {
-    username: 'admin',
-    password: 'admin'
+export async function login (username, password) {
+  const {data: res} = await http.post('/login', {
+    username,
+    password
   });
-  console.log(res)
+
   return res;
 }
