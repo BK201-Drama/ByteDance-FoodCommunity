@@ -14,9 +14,10 @@ import {
   Image,
   Input,
   Col,
-  Button
+  Button,
+  Popconfirm
 } from 'antd';
-
+import { PlusOutlined } from '@ant-design/icons';
 import './TopBar.css';
 import Avatar from 'antd/lib/avatar/avatar';
 
@@ -84,15 +85,26 @@ export default function TopBar (props) {
                 width={40}
                 src={avatar}
                 preview={false}
-                onClick={() => {navigate("/myZone")}}
+                onClick={() => {navigate(`/myZone/${username}`)}}
               />
             </Col>
             <Col span={2} style={{color: '#008c8c', marginLeft: 10}}>欢迎你: {username}</Col>
             <Col span={1} style={{color: '#008c8c', marginLeft: 10}}>
               <Button 
                 onClick={() => {
+                  navigate('/addMenu');
+                }}
+                shape="circle"
+                icon={<PlusOutlined />}
+                type="primary"
+              ></Button>
+            </Col>
+            <Col span={1} style={{color: '#008c8c', marginLeft: 10}}>
+              <Button 
+                onClick={() => {
                   window.sessionStorage.removeItem("store");
                   setAvatar(null);
+                  navigate('/');
                 }}
               >退出登录</Button>
             </Col>

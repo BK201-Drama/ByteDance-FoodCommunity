@@ -16,3 +16,12 @@ export async function sign (username, password) {
   });
   return res;
 }
+
+export async function updatePwd (username, password, newPwd) {
+  const res = await http.post('/updatePwd', {
+    username,
+    password,
+    newPwd
+  });
+  return res;
+}

@@ -8,6 +8,7 @@ import TopBar from '../Components/TopBar/TopBar';
 import NoPermission from './nopermission/NoPermission';
 import MyZone from './myZone/myZone';
 import Home from './home/home';
+import AddMenu from './addMenu/addMenu';
 
 const { Content } = Layout;
 
@@ -24,7 +25,8 @@ export default function PageContainer () {
         <div style={{ paddingTop: '20px' }}>
           <Routes>
             <Route path="/" element={<Home />} exact/>
-            <Route path="/myZone" element={<MyZone />} exact/>
+            <Route path='/addMenu' element={<AddMenu/>} exact/>
+            <Route path="/myZone/:username" element={<MyZone />} exact/>
             <Route path="*" element={<NoPermission />} exact/>
           </Routes>
         </div>

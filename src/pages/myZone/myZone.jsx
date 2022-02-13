@@ -19,11 +19,18 @@ export default function MyZone (props) {
 
   useEffect(async () => {
     const userObject = data.data;
-    const list = await listing(userObject.username);
-    const res = await infoList(list.username);
+
+    let str = window.location.href;
+    const userArr = str.split('/');
+    const user = userArr[userArr.length - 1];
+    const list = await listing(user);
+    const res = await infoList(user);
+
     await setListingList(list.listing);
     await setUsername(list.username);
     await setInfo(res);
+    console.log(window.location)
+    console.log(list.listing)
   }, []);
 
   return (
@@ -40,7 +47,7 @@ export default function MyZone (props) {
         </Col>
         <Col span={7}>
           <Card title={`账户: ${info.username}`} style={{ width: 300 }} extra={<a href="/">修改</a>}>
-            <p>地址: {`${info.address}`} ——— {`${info.join_time}`}加入</p>
+            <p>地址: {`${info.address}`} ——— {`${Date(info.join_time)}`}加入</p>
             <p>签名: {`${info.signature}`}</p>
           </Card>
         </Col>
@@ -74,28 +81,30 @@ export default function MyZone (props) {
           <div style={{marginTop: 95}}/>
         </> : 
         listingList.map((item) => {
-          <Col span={6}
-            onClick={() => {
-              console.log(123)
-            }}
-          >
-            <Card
-              style={{ width: 300 }}
-              cover={
-                <img
-                  alt="err"
-                  src={item.menu_pic}
-                />
-              }
+          return (
+            <Col span={6}
+              onClick={() => {
+                console.log(123)
+              }}
             >
-              <Meta
-                avatar={<Avatar src={item.Avatar} />}
-                title={item.title}
-                description={item.synopsis}
-              />
-            </Card>
-            <div style={{ height: 40 }}></div>
-          </Col>
+              <Card
+                style={{ width: 300 }}
+                cover={
+                  <img
+                    alt="err"
+                    src={item.menu_pic}
+                  />
+                }
+              >
+                <Meta
+                  avatar={<Avatar src={item.Avatar} />}
+                  title={item.title}
+                  description={item.synopsis}
+                />
+              </Card>
+              <div style={{ height: 40 }}></div>
+            </Col>
+          );
         })
       }
     </>
