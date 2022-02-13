@@ -16,8 +16,6 @@ import {
   Col,
   Button
 } from 'antd';
-import { login } from '../../api/login';
-import store from '../../redux/store';
 
 import './TopBar.css';
 import Avatar from 'antd/lib/avatar/avatar';
@@ -33,21 +31,18 @@ export default function TopBar (props) {
   let navigate = useNavigate();
 
   const [avatar, setAvatar] = useState(null);
+  const [username, setUsername] = useState(null);
 
   useEffect(async () => {
-    // console.log(res);
-    console.log(data);
-    // data = JSON.parse(data);
     const datag = JSON.parse(data);
-    console.log("test data", datag);
-    // useAvatar(datag.data.Avatar);
     if (datag) {
       setAvatar(datag.data.Avatar);
+      setUsername(datag.data.username);
     }
   }, []);
 
   return (
-    <Header style={{background: '#fff'}}>
+    <Header style={{background: '#fff', position: 'fixed', zIndex: 1, width: '100%'}}>
       <Menu mode="horizontal">
         <Col span={3}>
           {/* <Image
@@ -57,7 +52,12 @@ export default function TopBar (props) {
             src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
           /> */}
         </Col>
-        <Col span={3} style={{color: '#008c8c', fontSize: 24}}>美食平台</Col>
+        <Col 
+          span={3} style={{color: '#008c8c', fontSize: 24}} 
+          onClick={() => {
+            navigate('/');
+          }}
+        >美食平台</Col>
         <Col span={6}>
           <Search
             style={{marginTop: 12, marginLeft: 50}}
@@ -67,7 +67,7 @@ export default function TopBar (props) {
             // onSearch={onSearch}
           />
         </Col>
-        <Col span={5} style={{color: '#008c8c', fontSize: 24, marginLeft: 100}}>标签</Col>
+        <Col span={3} style={{color: '#008c8c', fontSize: 24, marginLeft: 100}}>标签</Col>
         {
           avatar === null ? 
           <>
@@ -84,9 +84,10 @@ export default function TopBar (props) {
                 width={40}
                 src={avatar}
                 preview={false}
-                onClick={() => {navigate("/sign")}}
+                onClick={() => {navigate("/myZone")}}
               />
             </Col>
+            <Col span={2} style={{color: '#008c8c', marginLeft: 10}}>欢迎你: {username}</Col>
             <Col span={1} style={{color: '#008c8c', marginLeft: 10}}>
               <Button 
                 onClick={() => {

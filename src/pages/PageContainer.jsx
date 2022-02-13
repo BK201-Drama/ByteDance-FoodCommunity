@@ -5,9 +5,9 @@ import './PageContainer.css';
 import { Layout } from 'antd';
 import TopBar from '../Components/TopBar/TopBar';
 
-import Login from './login/Login'
-import Sign from './sign/Sign';
 import NoPermission from './nopermission/NoPermission';
+import MyZone from './myZone/myZone';
+import Home from './home/home';
 
 const { Content } = Layout;
 
@@ -23,7 +23,9 @@ export default function PageContainer () {
       <Content style={{ padding: '0 50px' }}>
         <div style={{ paddingTop: '20px' }}>
           <Routes>
-            <Route path="/" element={<NoPermission />} exact/>
+            <Route path="/" element={<Home />} exact/>
+            <Route path="/myZone" element={<MyZone />} exact/>
+            <Route path="*" element={<NoPermission />} exact/>
           </Routes>
         </div>
       </Content>
