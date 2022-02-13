@@ -6,8 +6,8 @@ import { login } from '../../api/login';
 export default function NoPermission (props) {
   
   useEffect(async () => {
-    const res = await login("admin", "admin");
-    console.log(res);
+    // const res = await login("admin", "admin");
+    // console.log(res);
   }, []);
 
   return (

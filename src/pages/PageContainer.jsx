@@ -17,19 +17,13 @@ const { Content } = Layout;
  */
 export default function PageContainer () {
 
-  // const routes = useRoutes([
-  //   { path: "/login", element: <Login />},
-  //   { path: "/sign", element: <Sign />},
-  //   { path: "*", element: <NoPermission />}
-  // ]);
-
   return (
     <Layout>
       <TopBar/>
       <Content style={{ padding: '0 50px' }}>
         <div style={{ paddingTop: '20px' }}>
           <Routes>
-            <Route path="/login" element={<Login />} exact/>
+            <Route path="/" element={<NoPermission />} exact/>
           </Routes>
         </div>
       </Content>

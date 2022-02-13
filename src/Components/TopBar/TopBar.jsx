@@ -10,7 +10,7 @@ import {
 import {
   Layout,
   Menu,
-  Switch,
+  // Switch,
   Image,
   Input,
   Col,
@@ -24,17 +24,26 @@ import Avatar from 'antd/lib/avatar/avatar';
 
 const { Header } = Layout;
 const { Search } = Input;
+const { SubMenu } = Menu;
 
 export default function TopBar (props) {
-  const data = store.getState() === undefined ? JSON.parse(window.localStorage.getItem('store')) : store.getState();
+
+  const data = window.sessionStorage.getItem('store');
 
   let navigate = useNavigate();
 
-  const [avatar, useAvatar] = useState(null);
+  const [avatar, setAvatar] = useState(null);
 
   useEffect(async () => {
-    const res = await login("admin", "admin");
-    console.log(res);
+    // console.log(res);
+    console.log(data);
+    // data = JSON.parse(data);
+    const datag = JSON.parse(data);
+    console.log("test data", datag);
+    // useAvatar(datag.data.Avatar);
+    if (datag) {
+      setAvatar(datag.data.Avatar);
+    }
   }, []);
 
   return (
@@ -58,24 +67,35 @@ export default function TopBar (props) {
             // onSearch={onSearch}
           />
         </Col>
-        <Col span={3} style={{color: '#008c8c', fontSize: 24, marginLeft: 100}}>标签</Col>
+        <Col span={5} style={{color: '#008c8c', fontSize: 24, marginLeft: 100}}>标签</Col>
         {
           avatar === null ? 
           <>
             <Col span={1} style={{color: '#008c8c', marginLeft: 100}}>
-              <Button onClick={() => {navigate("/login");}}>登录</Button>
+              <Button onClick={() => {navigate("/login")}}>登录</Button>
             </Col>
             <Col span={1} style={{color: '#008c8c', marginLeft: 10}}>
-              <Button onClick={() => {navigate("/sign");}}>注册</Button>
+              <Button onClick={() => {navigate("/sign")}}>注册</Button>
             </Col>
           </> :
-          <Col span={1}>
-            <Image 
-              width={40}
-              src={avatar}
-              preview={false}
-            />
-          </Col>
+          <>
+            <Col span={1}>
+              <Image 
+                width={40}
+                src={avatar}
+                preview={false}
+                onClick={() => {navigate("/sign")}}
+              />
+            </Col>
+            <Col span={1} style={{color: '#008c8c', marginLeft: 10}}>
+              <Button 
+                onClick={() => {
+                  window.sessionStorage.removeItem("store");
+                  setAvatar(null);
+                }}
+              >退出登录</Button>
+            </Col>
+          </>
         }
       </Menu>
       
