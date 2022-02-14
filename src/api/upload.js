@@ -8,8 +8,8 @@ export async function uploadPic (info) {
   let formData = new FormData()
   formData.append('file', info)
   const {data: res} = await http.post(
-    '/upload', formData
-  , {
+    '/upload', 
+    formData, {
     headers: {
       'Content-Type': 'multipart/form-data; boundary=<calculated when request is sent>',
       "Cache-Control": "no-store"
