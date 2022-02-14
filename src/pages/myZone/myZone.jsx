@@ -4,7 +4,7 @@ import {
   listing
 } from '../../api/listing';
 import {
-  infoList
+  infoList, menuByMySelfList
 } from '../../api/info';
 
 const { Meta } = Card;
@@ -16,6 +16,7 @@ export default function MyZone (props) {
   const [listingList, setListingList] = useState([]);
   const [username, setUsername] = useState('');
   const [info, setInfo] = useState({});
+  const [menuList, setMenuList] = useState([]);
 
   useEffect(async () => {
     const userObject = data.data;
@@ -25,12 +26,14 @@ export default function MyZone (props) {
     const user = userArr[userArr.length - 1];
     const list = await listing(user);
     const res = await infoList(user);
+    const menuSelfList = await menuByMySelfList(user);
 
     await setListingList(list.listing);
     await setUsername(list.username);
     await setInfo(res);
+    await setMenuList(menuSelfList.menu_list);
     console.log(window.location)
-    console.log(list.listing)
+    console.log(menuSelfList);
   }, []);
 
   return (
@@ -80,32 +83,74 @@ export default function MyZone (props) {
           <Empty description="收藏列表啥都没有" style={{color: '#008c8c', fontSize: 10}}/>
           <div style={{marginTop: 95}}/>
         </> : 
-        listingList.map((item) => {
-          return (
-            <Col span={6}
-              onClick={() => {
-                console.log(123)
-              }}
-            >
-              <Card
-                style={{ width: 300 }}
-                cover={
-                  <img
-                    alt="err"
-                    src={item.menu_pic}
-                  />
-                }
-              >
-                <Meta
-                  avatar={<Avatar src={item.Avatar} />}
-                  title={item.title}
-                  description={item.synopsis}
-                />
-              </Card>
-              <div style={{ height: 40 }}></div>
-            </Col>
-          );
-        })
+        <Row>
+          {
+            listingList.map((item) => {
+              return (
+                <Col span={6}
+                  onClick={() => {
+                    console.log(123)
+                  }}
+                >
+                  <Card
+                    style={{ width: 300 }}
+                    cover={
+                      <img
+                        alt="err"
+                        src={item.menu_pic}
+                      />
+                    }
+                  >
+                    <Meta
+                      avatar={<Avatar src={item.Avatar} />}
+                      title={item.title}
+                      description={item.synopsis}
+                    />
+                  </Card>
+                  <div style={{ height: 30 }}></div>
+                </Col>
+              );
+            })
+          }
+        </Row>
+      }
+      <Divider orientation="left" style={{ color: "#008c8c", fontSize: 30 }}>我的创作</Divider>
+      {
+        menuList.length === 0 ?
+        <>
+          <Empty description="你的菜谱列表啥都没有" style={{color: '#008c8c', fontSize: 10}}/>
+          <div style={{marginTop: 40}}/>
+        </> :
+        <Row>
+          {
+            menuList.map((item) => {
+              return (
+                <Col span={6}
+                  onClick={() => {
+                    console.log(123)
+                  }}
+                >
+                  <Card
+                    style={{ width: 300 }}
+                    cover={
+                      <img
+                        alt="err"
+                        src={item.menu_pic}
+                      />
+                    }
+                  >
+                    <Meta
+                      avatar={<Avatar src={item.Avatar} />}
+                      title={item.title}
+                      description={item.synopsis}
+                    />
+                  </Card>
+                  <div style={{ height: 30 }}></div>
+                </Col>
+              );
+            })
+          }
+        </Row>
       }
     </>
   );

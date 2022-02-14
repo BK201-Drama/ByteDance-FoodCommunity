@@ -27,6 +27,7 @@ export default function PageContainer () {
             <Route path="/" element={<Home />} exact/>
             <Route path='/addMenu' element={<AddMenu/>} exact/>
             <Route path="/myZone/:username" element={<MyZone />} exact/>
+            
             <Route path="*" element={<NoPermission />} exact/>
           </Routes>
         </div>
