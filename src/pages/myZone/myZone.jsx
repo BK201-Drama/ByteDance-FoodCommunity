@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Statistic, Row, Col, Button, Avatar, Card, Divider, Empty, Image } from 'antd';
+import { Statistic, Row, Col, Button, Avatar, Card, Divider, Empty, Image, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import {
   listing
@@ -39,16 +39,17 @@ export default function MyZone (props) {
     const res = await infoList(user);
     const menuSelfList = await menuByMySelfList(user);
 
-    const isTrue = await isConcern(user, userObject.username);
+    const isTrue = await isConcern(userObject.username, user);
 
     await setListingList(list.listing);
     await setUsername(list.username);
     await setInfo(res);
     await setMenuList(menuSelfList.menu_list);
-    await setIsConcerned(isTrue.isListed);
+    await setIsConcerned(isTrue.is_concern);
   }, []);
 
   useEffect(async () => {
+    // console.log(info);
     await setConcernNum(info.concern_num);
     await setConcernedNum(info.concerned_num);
   }, [info])
@@ -96,30 +97,32 @@ export default function MyZone (props) {
                   onClick={async (e) => {
                     e.stopPropagation();
                     e.nativeEvent.stopImmediatePropagation();
-                    setIsConcerned(isConcerned);
-                    const res = await isConcern(username, data.data.username);
-                    console.log("res", res);
-                    if (res) {
-                      const q = await cancelConcern({
+                    const res = await isConcern(data.data.username, username);
+                    if (res.is_concern) {
+                      await cancelConcern({
                         username: data.data.username, 
                         username_concerned: info.username,
                         Avatar: data.data.Avatar,
                         Avatar_concerned: info.Avatar
                       });
-                      console.log(q)
-                      const resq = await isConcern(username, data.data.username);
-                      await setIsConcerned(resq.is_concern);
-
+                      const res_ = await infoList(username);
+                      await setInfo(res_);
+                      await setIsConcerned(!res.is_concern);
+                      await message.success('你已经取消关注', 1);
+                      return;
+                    } else {
+                      await addConcern({
+                        username: data.data.username, 
+                        username_concerned: info.username,
+                        Avatar: data.data.Avatar,
+                        Avatar_concerned: info.Avatar
+                      });
+                      const res_ = await infoList(username);
+                      await setInfo(res_);
+                      await setIsConcerned(!res.is_concern);
+                      await message.success('关注成功', 1); 
                       return;
                     }
-                    const add = await addConcern({
-                      username: data.data.username, 
-                      username_concerned: info.username,
-                      Avatar: data.data.Avatar,
-                      Avatar_concerned: info.Avatar
-                    });
-                    const res_ = await infoList(username);
-                    await setInfo(res_);
                   }}
                 >
                   {isConcerned ? "取消关注" : "+ 关注"}

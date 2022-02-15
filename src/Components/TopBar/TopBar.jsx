@@ -120,7 +120,7 @@ export default function TopBar (props) {
                   navigate('/');
                 }}
               >退出登录</Button>
-            </Col>    
+            </Col>
           </>
         }
       </Menu>

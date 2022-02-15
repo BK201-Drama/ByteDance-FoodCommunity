@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Divider, Button, Image, Col, Row, Table, Tag, Space, Comment, Tooltip, Avatar, Input, Form, List, Editor, message } from 'antd';
+import { Divider, Button, Image, Col, Row, Table, Tag, Space, Comment, Tooltip, Avatar, Input, Form, List, Editor, message, Empty } from 'antd';
 import { DislikeOutlined, LikeOutlined, DislikeFilled, LikeFilled } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import moment from 'moment';
@@ -163,7 +163,7 @@ export default function Menu () {
               }
             />
           </>
-        }) : <></>
+        }) : <Empty description="没人评论，抢沙发吧！" style={{marginBottom: '5%', color: '#008c8c'}}/>
       }
       </div>
 
@@ -175,7 +175,7 @@ export default function Menu () {
             onFinish={onFinish}
           >
             <Form.Item name="comment">
-              <TextArea rows={4}/>
+              <TextArea rows={4} placeholder="写下你想询问的"/>
             </Form.Item>
             <Form.Item>
               <Button htmlType="submit" type="primary">
