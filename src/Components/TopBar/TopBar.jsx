@@ -59,7 +59,9 @@ export default function TopBar (props) {
           onClick={() => {
             navigate('/');
           }}
-        >美食平台</Col>
+        >
+          <a style={{color: '#008c8c'}}>美食平台</a>
+        </Col>
         <Col span={6}>
           <Search
             style={{marginTop: 12, marginLeft: 50}}
@@ -69,7 +71,13 @@ export default function TopBar (props) {
             // onSearch={onSearch}
           />
         </Col>
-        <Col span={3} style={{color: '#008c8c', fontSize: 24, marginLeft: 100}}>标签</Col>
+        <Col
+          span={3}
+          style={{color: '#008c8c', fontSize: 24, marginLeft: 100}} 
+          onClick={() => {navigate('/TagPage')}}
+        >
+          <a style={{color: '#008c8c'}}>标签</a>
+        </Col>
         {
           avatar === null ? 
           <>
@@ -82,14 +90,16 @@ export default function TopBar (props) {
           </> :
           <>
             <Col span={1}>
+              <a>
               <Image 
                 width={40}
                 src={avatar}
                 preview={false}
                 onClick={() => {navigate(`/myZone/${username}`)}}
               />
+              </a>
             </Col>
-            <Col span={2} style={{color: '#008c8c', marginLeft: 10}}>欢迎你: {username}</Col>
+            <Col span={2}><a style={{color: '#008c8c', marginLeft: 10}}>欢迎你: {username}</a></Col>
             <Col span={1} style={{color: '#008c8c', marginLeft: 10}}>
               <Tooltip placement="bottomLeft" title="添加菜谱">
                 <Button 
@@ -110,7 +120,7 @@ export default function TopBar (props) {
                   navigate('/');
                 }}
               >退出登录</Button>
-            </Col>
+            </Col>    
           </>
         }
       </Menu>

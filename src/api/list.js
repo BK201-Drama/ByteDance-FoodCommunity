@@ -9,4 +9,3 @@ export async function menuTagList (classify_name) {
   const {data: res} = await http.get(`/menuTagList?classify_name=${classify_name}`);
   return res;
 }
-

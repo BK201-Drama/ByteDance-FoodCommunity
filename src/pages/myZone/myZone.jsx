@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Statistic, Row, Col, Button, Avatar, Card, Divider, Empty } from 'antd';
+import { Statistic, Row, Col, Button, Avatar, Card, Divider, Empty, Image } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import {
   listing
@@ -61,9 +61,9 @@ export default function MyZone (props) {
       <Row gutter={16}>
         <Col span={2}></Col>
         <Col span={4}>
-          <Avatar size={170}
+          <Image width={200}
             src={info.Avatar}
-          >admin</Avatar>
+          >admin</Image>
         </Col>
         <Col span={7}>
           <Card title={`账户: ${info.username}`} style={{ width: 300 }} extra={<a href="/">修改</a>}>
@@ -154,11 +154,13 @@ export default function MyZone (props) {
                       />
                     }
                   >
-                    <Meta
-                      avatar={<Avatar src={item.Avatar} />}
-                      title={item.title}
-                      description={item.synopsis}
-                    />
+                    <a>
+                      <Meta
+                        avatar={<Avatar src={item.Avatar} />}
+                        title={item.title}
+                        description={item.synopsis}
+                      />
+                    </a>
                   </Card>
                   <div style={{ height: 30 }}></div>
                 </Col>
@@ -180,7 +182,8 @@ export default function MyZone (props) {
               return (
                 <Col span={6}
                   onClick={() => {
-                    console.log(123)
+                    console.log("Col");
+                    navigate(`/menu/${item.menu_id}`);
                   }}
                 >
                   <Card
@@ -192,11 +195,17 @@ export default function MyZone (props) {
                       />
                     }
                   >
-                    <Meta
-                      avatar={<Avatar src={item.Avatar} />}
-                      title={item.title}
-                      description={item.synopsis}
-                    />
+                    <a>
+                      <Meta
+                        avatar={<Avatar src={item.Avatar} onClick={(e) => {
+                          e.stopPropagation();
+                          e.nativeEvent.stopImmediatePropagation();
+                          navigate(`/myZone/${item.username}`);
+                        }}/>}
+                        title={item.title}
+                        description={item.synopsis}
+                      />
+                    </a>
                   </Card>
                   <div style={{ height: 30 }}></div>
                 </Col>

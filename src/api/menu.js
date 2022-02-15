@@ -31,3 +31,8 @@ export async function getMenuById (menu_id) {
   const {data: res} = await http.get(`/menu/${menu_id}`);
   return res;
 }
+
+export async function getAvatar (username) {
+  const {data: res} = await http.get(`/avatar?username=${username}`);
+  return res;
+}

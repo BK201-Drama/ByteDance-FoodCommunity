@@ -1,21 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Avatar, Col, Row, Layout, Divider } from 'antd';
-import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
-import {
-  menuList
-} from '../../api/list';
+import { menuTagList } from '../../api/list';
 
 const { Meta } = Card;
 
-export default function Home () {
-
+export default function IsTagPage () {
+  
   const navigate = useNavigate();
   const [list, setList] = useState([]);
 
   useEffect(async () => {
-    const List_ = await menuList();
+
+    let str = window.location.href;
+    const classifyNameArr = str.split('/');
+    const classifyName = classifyNameArr[classifyNameArr.length - 1];
+
+    const List_ = await menuTagList(classifyName);
     console.log(List_)
     setList(List_);
   }, []);
