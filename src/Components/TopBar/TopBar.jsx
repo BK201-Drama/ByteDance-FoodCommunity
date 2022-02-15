@@ -15,7 +15,8 @@ import {
   Input,
   Col,
   Button,
-  Popconfirm
+  Popconfirm,
+  Tooltip
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import './TopBar.css';
@@ -90,14 +91,16 @@ export default function TopBar (props) {
             </Col>
             <Col span={2} style={{color: '#008c8c', marginLeft: 10}}>欢迎你: {username}</Col>
             <Col span={1} style={{color: '#008c8c', marginLeft: 10}}>
-              <Button 
-                onClick={() => {
-                  navigate('/addMenu');
-                }}
-                shape="circle"
-                icon={<PlusOutlined />}
-                type="primary"
-              ></Button>
+              <Tooltip placement="bottomLeft" title="添加菜谱">
+                <Button 
+                  onClick={() => {
+                    navigate('/addMenu');
+                  }}
+                  shape="circle"
+                  icon={<PlusOutlined />}
+                  type="primary"
+                ></Button>
+              </Tooltip>
             </Col>
             <Col span={1} style={{color: '#008c8c', marginLeft: 10}}>
               <Button 

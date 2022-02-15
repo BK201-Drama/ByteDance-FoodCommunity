@@ -9,6 +9,9 @@ import NoPermission from './nopermission/NoPermission';
 import MyZone from './myZone/myZone';
 import Home from './home/home';
 import AddMenu from './addMenu/addMenu';
+import Concern from './concern/Concern';
+import Concerned from './concerned/Concerned';
+import Menu from './menu/Menu';
 
 const { Content } = Layout;
 
@@ -26,7 +29,11 @@ export default function PageContainer () {
           <Routes>
             <Route path="/" element={<Home />} exact/>
             <Route path='/addMenu' element={<AddMenu/>} exact/>
+            
             <Route path="/myZone/:username" element={<MyZone />} exact/>
+            <Route path="/Concern/:username" element={<Concern />} exact/>
+            <Route path="/Concerned/:username" element={<Concerned />} exact/>
+            <Route path="/menu/:menu_id" element={<Menu />} exact/>
             
             <Route path="*" element={<NoPermission />} exact/>
           </Routes>

@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import { Statistic, Row, Col, Button, Avatar, Card, Divider, Empty } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import {
   listing
 } from '../../api/listing';
 import {
   infoList, menuByMySelfList
 } from '../../api/info';
+import {
+  isConcern,
+  addConcern,
+  cancelConcern
+} from '../../api/aboutConcern';
 
 const { Meta } = Card;
 
@@ -17,6 +23,11 @@ export default function MyZone (props) {
   const [username, setUsername] = useState('');
   const [info, setInfo] = useState({});
   const [menuList, setMenuList] = useState([]);
+  const [isConcerned, setIsConcerned] = useState(true);
+  const navigate = useNavigate();
+
+  const [concernNum, setConcernNum] = useState(0);
+  const [concernedNum, setConcernedNum] = useState(0);
 
   useEffect(async () => {
     const userObject = data.data;
@@ -28,13 +39,19 @@ export default function MyZone (props) {
     const res = await infoList(user);
     const menuSelfList = await menuByMySelfList(user);
 
+    const isTrue = await isConcern(user, userObject.username);
+
     await setListingList(list.listing);
     await setUsername(list.username);
     await setInfo(res);
     await setMenuList(menuSelfList.menu_list);
-    console.log(window.location)
-    console.log(menuSelfList);
+    await setIsConcerned(isTrue.isListed);
   }, []);
+
+  useEffect(async () => {
+    await setConcernNum(info.concern_num);
+    await setConcernedNum(info.concerned_num);
+  }, [info])
 
   return (
     <>
@@ -44,7 +61,7 @@ export default function MyZone (props) {
       <Row gutter={16}>
         <Col span={2}></Col>
         <Col span={4}>
-          <Avatar size={170} 
+          <Avatar size={170}
             src={info.Avatar}
           >admin</Avatar>
         </Col>
@@ -57,19 +74,55 @@ export default function MyZone (props) {
         <div style={{width: '30%', height: 250}}>
           <Row gutter={16} style={{background: '#fff', paddingTop: 20, paddingBottom: 45}}>
             <Col span={3}></Col>
-            <Col span={10}>
+            <Col span={10} onClick={(e) => {
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
+                console.log("concern")
+                navigate(`/Concern/${username}`)
+            }}>
               <Statistic title="关注" value={`${info.concern_num}`} />
             </Col>
-            <Col span={11}>
-              <Statistic title=" 粉丝" value={`${info.concerned_num}`} />
+            <Col span={11}  onClick={() => {
+                navigate(`/Concerned/${username}`)
+            }}> 
+              <Statistic title=" 粉丝" value={`${info.concerned_num}`}/>
               {
                 username === data.data.username ? 
                 <></> :
                 <Button 
                   style={{ marginTop: 16 }} 
                   type="primary"
+                  // disabled={isConcerned}
+                  onClick={async (e) => {
+                    e.stopPropagation();
+                    e.nativeEvent.stopImmediatePropagation();
+                    setIsConcerned(isConcerned);
+                    const res = await isConcern(username, data.data.username);
+                    console.log("res", res);
+                    if (res) {
+                      const q = await cancelConcern({
+                        username: data.data.username, 
+                        username_concerned: info.username,
+                        Avatar: data.data.Avatar,
+                        Avatar_concerned: info.Avatar
+                      });
+                      console.log(q)
+                      const resq = await isConcern(username, data.data.username);
+                      await setIsConcerned(resq.is_concern);
+
+                      return;
+                    }
+                    const add = await addConcern({
+                      username: data.data.username, 
+                      username_concerned: info.username,
+                      Avatar: data.data.Avatar,
+                      Avatar_concerned: info.Avatar
+                    });
+                    const res_ = await infoList(username);
+                    await setInfo(res_);
+                  }}
                 >
-                  + 关注
+                  {isConcerned ? "取消关注" : "+ 关注"}
                 </Button>
               }
             </Col>

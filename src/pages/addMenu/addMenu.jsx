@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Form, Input, InputNumber, Button, Row, Col, Space, Select, Upload, Divider, Avatar } from 'antd';
+import { Form, Input, InputNumber, Button, Row, Col, Space, Select, Upload, Divider, Avatar, notification } from 'antd';
 import UploadPic from "./components/upload";
 import { MinusCircleOutlined, PlusOutlined, UserOutlined } from '@ant-design/icons';
+import { useNavigate } from "react-router-dom";
 
 import { tagList } from '../../api/tag';
 import { addMenu } from '../../api/menu';
@@ -39,15 +40,14 @@ function Debounce (fn) {
 }
 
 export default function AddMenu () {
+  
 
   const [form] = Form.useForm();
-
   const [menuPic, setMenuPic] = useState('');
   const [tag, setTag] = useState([]);
-
   const [fileList, setFileList] = useState([]);
-
   const [url, setUrl] = useState([]);
+  const navigate = useNavigate();
 
   const onPreview = async file => {
     let src = file.url;
@@ -100,6 +100,13 @@ export default function AddMenu () {
       Tips: values.Tips
     });
     console.log(res);
+    if (res) {
+      navigate('/');
+      notification.open({
+        message: '添加成功',
+        description: '你已添加成功，快来开始吧'
+      });
+    }
   };
 
   const onChange = async ({ fileList: newFileList }) => {
@@ -235,7 +242,7 @@ export default function AddMenu () {
                           onChange={onChange}
                           onPreview={onPreview}
                         >
-                          {field.key >= fileList.length ? '上传' : <Avatar>U</Avatar>}
+                          {field.key >= fileList.length ? '上传' : <Avatar src={url[field.key]}></Avatar>}
                         </Upload>
                       </Form.Item>
                       <MinusCircleOutlined onClick={() => remove(field.name)} />
