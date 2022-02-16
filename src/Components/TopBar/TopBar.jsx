@@ -10,17 +10,19 @@ import {
 import {
   Layout,
   Menu,
-  // Switch,
   Image,
   Input,
   Col,
   Button,
-  Popconfirm,
-  Tooltip
+  Tooltip,
+  message
 } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import './TopBar.css';
 import Avatar from 'antd/lib/avatar/avatar';
+
+import store from '../../redux/store';
+
 
 const { Header } = Layout;
 const { Search } = Input;
@@ -42,6 +44,20 @@ export default function TopBar (props) {
       setUsername(datag.data.username);
     }
   }, []);
+
+  const onSearch = async (value) => {
+    if (value === '') {
+      message.error('请输入搜索字段！', 0.5);
+      return;
+    }
+    const Action = {
+      type: 'input',
+      data: value
+    };
+    // 通知redux获取value到action中
+    await store.dispatch(Action);
+    await navigate('/SearchPage');
+  }
 
   return (
     <Header style={{background: '#fff', position: 'fixed', zIndex: 1, width: '100%'}}>
@@ -68,7 +84,7 @@ export default function TopBar (props) {
             placeholder="搜索菜谱"
             enterButton="搜索"
             size="large"
-            // onSearch={onSearch}
+            onSearch={onSearch}
           />
         </Col>
         <Col

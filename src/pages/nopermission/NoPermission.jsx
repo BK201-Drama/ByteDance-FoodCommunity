@@ -1,18 +1,11 @@
-import React, {
-  useEffect
-} from 'react';
-import { login } from '../../api/login';
+import React from 'react';
 
-export default function NoPermission (props) {
-  
-  useEffect(async () => {
-    // const res = await login("admin", "admin");
-    // console.log(res);
-  }, []);
+export default function NoPermission () {
 
   return (
-    <div>
-      NoPermission
-    </div>
+    <>
+      <div style={{marginTop: 70}}/>
+      <div>noPermission</div>
+    </>
   )
 }

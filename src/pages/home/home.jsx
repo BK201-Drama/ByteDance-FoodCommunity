@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Avatar, Col, Row, Layout, Divider } from 'antd';
+import { Card, Avatar, Col, Row, Layout, Divider, message } from 'antd';
 import { EditOutlined, EllipsisOutlined, SettingOutlined, DeleteOutlined, HeartOutlined, StarOutlined, HeartFilled, StarFilled } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,7 +27,6 @@ export default function Home () {
     const List_ = await menuList();
     console.log(List_)
     setList(List_);
-    // const isList = isListed(data.data.username, );
   }, []);
 
   useEffect(async () => {
@@ -66,15 +65,52 @@ export default function Home () {
                   />
                 }
                 actions={[
-                  !star[index] ? 
+                  star[index] ? 
+                  <StarFilled onClick={async (e) => {
+                    e.stopPropagation();
+                    e.nativeEvent.stopImmediatePropagation();
+                    if (!data) {
+                      return;
+                    }
+                    const res = await deleteListing(data.data.username, item.menu_id);
+                    console.log("res", res);
+                    if (res.username) {
+                      message.success('取消收藏成功', 1);
+                      await setStar(star => {
+                        const ma = star.map((item, idx) => {
+                          if (idx === index) {
+                            return !item;
+                          }
+                          return item;
+                        });
+                        console.log("ma", ma);
+                        return ma;
+                      });
+                    }
+                  }}/> :
                   <StarOutlined onClick={async (e) => {
                     e.stopPropagation();
                     e.nativeEvent.stopImmediatePropagation();
-                  }}/> : <StarFilled onClick={async (e) => {
-                    e.stopPropagation();
-                    e.nativeEvent.stopImmediatePropagation();
-                    const res = await isListed(item.username, item.menu_id)
-                    console.log(res)
+                    if (!data) {
+                      return;
+                    }
+                    const res = await addListing(data.data.username, item.menu_id);
+                    if (res.username) {
+                      const star_ = star[index];
+                      console.log('star_', star_)
+                      message.success('收藏成功', 1);
+                      console.log("star", star);
+                      await setStar(star => {
+                        const ma = star.map((item, idx) => {
+                          if (idx === index) {
+                            return !item;
+                          }
+                          return item;
+                        });
+                        console.log("ma", ma);
+                        return ma;
+                      });
+                    }
                   }}/>
                 ]}
               >

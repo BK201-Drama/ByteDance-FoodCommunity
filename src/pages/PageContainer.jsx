@@ -14,6 +14,7 @@ import Concerned from './concerned/Concerned';
 import Menu from './menu/Menu';
 import TagPage from './tagPage/TagPage';
 import IsTagPage from './isTagPage/IsTagPage';
+import SearchPage from './searchPage/SearchPage';
 
 const { Content } = Layout;
 
@@ -38,6 +39,7 @@ export default function PageContainer () {
             <Route path="/menu/:menu_id" element={<Menu />} exact/>
             <Route path="/TagPage" element={<TagPage />} exact/>
             <Route path="/TagPage/:classify_name" element={<IsTagPage />} exact/>
+            <Route path="/SearchPage" element={<SearchPage />} exact/>
             
             <Route path="*" element={<NoPermission />} exact/>
           </Routes>

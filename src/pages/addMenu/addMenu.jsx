@@ -78,8 +78,6 @@ export default function AddMenu () {
       return item.classify_name === Classification
     })
 
-    console.log("mac", mac)
-
     const practice_ = url.map((item, index) => {
       let idx = index + 1;
       return {
@@ -96,7 +94,7 @@ export default function AddMenu () {
       synopsis: values.synopsis,
       material: values.material,
       practice: practice_,
-      classification: Classification,
+      classification: mac,
       Tips: values.Tips
     });
     console.log(res);

@@ -14,7 +14,7 @@ export async function addListing (username, menu_id) {
 }
 
 export async function deleteListing (username, menu_id) {
-  const {data: res} = await http.delete('/Listing', {
+  const {data: res} = await http.post('/deleteListing', {
     username,
     menu_id
   });

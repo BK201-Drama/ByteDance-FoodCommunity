@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Statistic, Row, Col, Button, Avatar, Card, Divider, Empty, Image, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { DeleteOutlined } from '@ant-design/icons';
 import {
-  listing
+  listing,
+  deleteListing
 } from '../../api/listing';
 import {
   infoList, menuByMySelfList
@@ -12,6 +14,7 @@ import {
   addConcern,
   cancelConcern
 } from '../../api/aboutConcern';
+import { deleteMenu } from '../../api/menu';
 
 const { Meta } = Card;
 
@@ -50,8 +53,10 @@ export default function MyZone (props) {
 
   useEffect(async () => {
     // console.log(info);
+    // const menuSelfList_ = await menuByMySelfList(username);
     await setConcernNum(info.concern_num);
     await setConcernedNum(info.concerned_num);
+    // await setMenuList(menuSelfList_.menu_list);
   }, [info])
 
   return (
@@ -145,7 +150,8 @@ export default function MyZone (props) {
               return (
                 <Col span={6}
                   onClick={() => {
-                    console.log(123)
+                    // console.log(123)
+                    navigate(`/menu/${item.menu_id}`);
                   }}
                 >
                   <Card
@@ -155,6 +161,22 @@ export default function MyZone (props) {
                         alt="err"
                         src={item.menu_pic}
                       />
+                    }
+                    actions={
+                      (data === null || data.data.username !== username) ?
+                      [] :
+                      [
+                        <DeleteOutlined onClick={async (e) => {
+                          e.stopPropagation();
+                          e.nativeEvent.stopImmediatePropagation();
+                          const res = await deleteListing(data.data.username, item.menu_id);
+                          if (res.username) {
+                            // const res_ = await menuByMySelfList(username);
+                            await setListingList(res.listing);
+                            message.success("取消收藏成功", 1);
+                          }
+                        }}/>
+                      ]
                     }
                   >
                     <a>
@@ -185,7 +207,7 @@ export default function MyZone (props) {
               return (
                 <Col span={6}
                   onClick={() => {
-                    console.log("Col");
+                    // console.log("Col");
                     navigate(`/menu/${item.menu_id}`);
                   }}
                 >
@@ -197,6 +219,19 @@ export default function MyZone (props) {
                         src={item.menu_pic}
                       />
                     }
+                    actions={
+                    (data === null || data.data.username !== username) ?
+                    [] :
+                    [<DeleteOutlined onClick={async (e) => {
+                      e.stopPropagation();
+                      e.nativeEvent.stopImmediatePropagation();
+                      const res = await deleteMenu(data.data.username, item.menu_id);
+                      if (res.deletedCount >= 0) {
+                        const res_ = await menuByMySelfList(username);
+                        await setMenuList(res_.menu_list);
+                        message.success("删除菜谱成功", 1);
+                      }
+                    }}/>]}
                   >
                     <a>
                       <Meta

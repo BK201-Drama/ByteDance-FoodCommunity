@@ -36,3 +36,10 @@ export async function getAvatar (username) {
   const {data: res} = await http.get(`/avatar?username=${username}`);
   return res;
 }
+
+export async function searchMenu (input) {
+  const {data: res} = await http.post('/searchMenu', {
+    input: input
+  });
+  return res;
+}
