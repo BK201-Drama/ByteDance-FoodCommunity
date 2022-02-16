@@ -50,9 +50,6 @@ export default function Home () {
           return (
             <Col span={6}
               onClick={(e) => {
-                // e.stopPropagation();
-                // e.nativeEvent.stopImmediatePropagation();
-                console.log("Col");
                 navigate(`/menu/${item.menu_id}`);
               }}
             >

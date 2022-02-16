@@ -11,6 +11,6 @@ export async function menuByMySelfList (username) {
 }
 
 export async function patchInfo (object) {
-  const {data: res} = await http.patch('/menu', object);
+  const {data: res} = await http.patch('/info', object);
   return res;
 }

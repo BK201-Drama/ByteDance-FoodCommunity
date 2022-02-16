@@ -53,6 +53,7 @@ export default function SearchPage () {
                     avatar={<Avatar src={item.Avatar} onClick={(e) => {
                       e.stopPropagation();
                       e.nativeEvent.stopImmediatePropagation();
+                      console.log(item)
                       navigate(`/myZone/${item.username}`);
                     }}/>}
                     title={item.title}

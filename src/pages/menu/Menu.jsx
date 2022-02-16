@@ -31,6 +31,8 @@ const columns = [
 
 export default function Menu () {
 
+  const data = JSON.parse(window.sessionStorage.getItem('store'));
+
   const [menuId, setMenuId] = useState('');
   const [menuInfo, setMenuInfo] = useState({});
   const [dat, setDat] = useState([]);
@@ -42,8 +44,8 @@ export default function Menu () {
 
   const onFinish = async (values) => {
     await addComment({
-      username: menuInfo.username,
-      Avatar: avatar,
+      username: data.data.username,
+      Avatar: data.data.Avatar,
       menu_id: menuInfo.menu_id,
       comment: values.comment
     })
@@ -105,7 +107,7 @@ export default function Menu () {
         <Col>
           <Image
             width={100}
-            src={menuInfo.menu_pic}
+            src={avatar}
             preview={false}
             onClick={() => {navigate(`/myZone/${menuInfo.username}`)}}
           />
@@ -169,7 +171,7 @@ export default function Menu () {
 
       <Comment
         style={{width: '60%', marginLeft: '20%'}}
-        avatar={<Avatar src={avatar} alt="Han Solo" />}
+        avatar={<Avatar src={data.data.Avatar} alt="Han Solo" />}
         content={
           <Form
             onFinish={onFinish}

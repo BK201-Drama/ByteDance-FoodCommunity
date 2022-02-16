@@ -3,6 +3,7 @@ import { Card, Avatar, Col, Row, Layout, Divider } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import { menuTagList } from '../../api/list';
+import { getAvatar } from '../../api/menu';
 
 const { Meta } = Card;
 
@@ -32,8 +33,8 @@ export default function IsTagPage () {
           return (
             <Col span={6}
               onClick={(e) => {
-                // e.stopPropagation();
-                // e.nativeEvent.stopImmediatePropagation();
+                e.stopPropagation();
+                e.nativeEvent.stopImmediatePropagation();
                 console.log("Col");
                 navigate(`/menu/${item.menu_id}`);
               }}

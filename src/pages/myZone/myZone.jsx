@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Statistic, Row, Col, Button, Avatar, Card, Divider, Empty, Image, message } from 'antd';
+import { Statistic, Row, Col, Button, Avatar, Card, Divider, Empty, Image, message, Modal, Form, Input, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { DeleteOutlined } from '@ant-design/icons';
 import {
@@ -7,7 +7,7 @@ import {
   deleteListing
 } from '../../api/listing';
 import {
-  infoList, menuByMySelfList
+  infoList, menuByMySelfList, patchInfo
 } from '../../api/info';
 import {
   isConcern,
@@ -17,6 +17,7 @@ import {
 import { deleteMenu } from '../../api/menu';
 
 const { Meta } = Card;
+const { Option } = Select;
 
 export default function MyZone (props) {
 
@@ -31,6 +32,10 @@ export default function MyZone (props) {
 
   const [concernNum, setConcernNum] = useState(0);
   const [concernedNum, setConcernedNum] = useState(0);
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [formAddress, setFormAddress] = useState('');
+  const [formSignature, setFormSignature] = useState('');
 
   useEffect(async () => {
     const userObject = data.data;
@@ -49,6 +54,8 @@ export default function MyZone (props) {
     await setInfo(res);
     await setMenuList(menuSelfList.menu_list);
     await setIsConcerned(isTrue.is_concern);
+    await setFormAddress(info.address);
+    await setFormSignature(info.signature);
   }, []);
 
   useEffect(async () => {
@@ -58,6 +65,46 @@ export default function MyZone (props) {
     await setConcernedNum(info.concerned_num);
     // await setMenuList(menuSelfList_.menu_list);
   }, [info])
+
+  const onFinish = (values) => {
+    console.log('Success:', values);
+  };
+
+  const showModal = () => {
+    setIsModalVisible(true);
+  };
+
+  const handleOk = async () => {
+
+    const res = await patchInfo({
+      username: username,
+      Avatar: info.Avatar,
+      address: formAddress,
+      join_time: info.join_time,
+      concern_num: info.concern_num,
+      concerned_num: info.concerned_num,
+      signature: formSignature
+    });
+    await setInfo(res);
+    if (res.username) {
+      message.success("修改成功！", 1);
+    }
+    await setIsModalVisible(false);
+  };
+
+  const handleCancel = async () => {
+
+    setIsModalVisible(false);
+  };
+
+  const onChangeAddress = (e) => {
+    // console.log(e.target.value)
+    setFormAddress(e.target.value);
+  }
+
+  const onChangeSignature = (e) => {
+    setFormSignature(e.target.value);
+  }
 
   return (
     <>
@@ -72,7 +119,11 @@ export default function MyZone (props) {
           >admin</Image>
         </Col>
         <Col span={7}>
-          <Card title={`账户: ${info.username}`} style={{ width: 300 }} extra={<a onClick={() => {console.log(123)}}>修改</a>}>
+          <Card 
+            title={`账户: ${info.username}`} 
+            style={{ width: 300 }} 
+            extra={<a onClick={showModal}>修改</a>}
+          >
             <p>地址: {`${info.address}`} ——— {`${Date(info.join_time)}`}加入</p>
             <p>签名: {`${info.signature}`}</p>
           </Card>
@@ -252,6 +303,27 @@ export default function MyZone (props) {
           }
         </Row>
       }
+      <Modal title="修改信息" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <Form
+          onFinish={onFinish}
+        >
+          <Form.Item
+              label="地址"
+              name="address"
+              rules={[{ required: true, message: 'Please input your address!' }]}
+            >
+            <Input defaultValue={info.address} onChange={onChangeAddress}></Input>
+          </Form.Item>
+
+          <Form.Item
+            label="签名"
+            name="signature"
+            rules={[{ required: true, message: 'Please input your signature!' }]}
+          >
+            <Input defaultValue={info.signature} onChange={onChangeSignature}></Input>
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 }
