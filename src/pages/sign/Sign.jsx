@@ -38,8 +38,8 @@ export default function Sign () {
       });
       return
     }
-    navigate('/');
     window.sessionStorage.setItem('store', JSON.stringify(res));
+    navigate('/');
     notification.open({
       message: '注册成功',
       description: '欢迎来到美食平台',

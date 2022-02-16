@@ -72,7 +72,7 @@ export default function MyZone (props) {
           >admin</Image>
         </Col>
         <Col span={7}>
-          <Card title={`账户: ${info.username}`} style={{ width: 300 }} extra={<a href="/">修改</a>}>
+          <Card title={`账户: ${info.username}`} style={{ width: 300 }} extra={<a onClick={() => {console.log(123)}}>修改</a>}>
             <p>地址: {`${info.address}`} ——— {`${Date(info.join_time)}`}加入</p>
             <p>签名: {`${info.signature}`}</p>
           </Card>
