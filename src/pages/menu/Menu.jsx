@@ -67,6 +67,7 @@ export default function Menu () {
     const com_list = await showCommentListById(id);
     const AVA = await getAvatar(res.username);
 
+    console.log(res);
     await setMenuId(id);
     await setMenuInfo(res);
     await setCommentList(com_list.comments);
@@ -168,25 +169,27 @@ export default function Menu () {
         }) : <Empty description="没人评论，抢沙发吧！" style={{marginBottom: '5%', color: '#008c8c'}}/>
       }
       </div>
-
-      <Comment
-        style={{width: '60%', marginLeft: '20%'}}
-        avatar={<Avatar src={data.data.Avatar} alt="Han Solo" />}
-        content={
-          <Form
-            onFinish={onFinish}
-          >
-            <Form.Item name="comment">
-              <TextArea rows={4} placeholder="写下你想询问的"/>
-            </Form.Item>
-            <Form.Item>
-              <Button htmlType="submit" type="primary">
-                添加评论
-              </Button>
-            </Form.Item>
-          </Form>
-        }
-      />
+      {
+        data === null ? <Button style={{width: '60%', marginLeft: '20%'}} onClick={() => {navigate('/login')}}>您未登录，不能发表评论，请点击我以登录</Button> : 
+          <Comment
+          style={{width: '60%', marginLeft: '20%'}}
+          avatar={<Avatar src={data.data.Avatar} alt="Han Solo" />}
+          content={
+            <Form
+              onFinish={onFinish}
+            >
+              <Form.Item name="comment">
+                <TextArea rows={4} placeholder="写下你想询问的"/>
+              </Form.Item>
+              <Form.Item>
+                <Button htmlType="submit" type="primary">
+                  添加评论
+                </Button>
+              </Form.Item>
+            </Form>
+          }
+        />
+      }
       <div style={{marginTop: 70}}/>
     </>
   )

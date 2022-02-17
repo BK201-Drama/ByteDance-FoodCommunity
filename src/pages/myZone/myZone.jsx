@@ -14,7 +14,7 @@ import {
   addConcern,
   cancelConcern
 } from '../../api/aboutConcern';
-import { deleteMenu } from '../../api/menu';
+import { deleteMenu, getAvatar } from '../../api/menu';
 
 const { Meta } = Card;
 const { Option } = Select;
@@ -46,6 +46,7 @@ export default function MyZone (props) {
     const list = await listing(user);
     const res = await infoList(user);
     const menuSelfList = await menuByMySelfList(user);
+    console.log(menuSelfList)
 
     const isTrue = await isConcern(userObject.username, user);
 
