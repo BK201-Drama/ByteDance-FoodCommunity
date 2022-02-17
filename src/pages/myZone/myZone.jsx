@@ -64,6 +64,7 @@ export default function MyZone (props) {
     // const menuSelfList_ = await menuByMySelfList(username);
     await setConcernNum(info.concern_num);
     await setConcernedNum(info.concerned_num);
+    console.log(info)
     // await setMenuList(menuSelfList_.menu_list);
   }, [info])
 
